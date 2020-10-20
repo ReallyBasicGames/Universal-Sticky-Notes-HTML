@@ -133,17 +133,31 @@ function research()
       button1.style.display = "block";
       button1.style.visibility = "visible";
     }
-    else if(factory1Research == 1 && factory1Total > 1)
+    else if(factory1Research == 1 && factory1Total >= 5)
     {
       button1 = document.getElementById("research1Button");
       document.getElementById("research1Name").innerHTML = "Begin the long road of efficiency. Increase factory production by 20%. $500";
       button1.style.display = "block";
       button1.style.visibility = "visible";
     }
-    else if(factory1Research == 2 && factory1Total > 10)
+    else if(factory1Research == 2 && factory1Total >= 10)
     {
       button1 = document.getElementById("research1Button");
       document.getElementById("research1Name").innerHTML = "More efficiencent factories. Increase factory production by another 50%. $2000";
+      button1.style.display = "block";
+      button1.style.visibility = "visible";
+    }
+    else if(factory1Research == 3 && factory1Total >= 20)
+    {
+      button1 = document.getElementById("research1Button");
+      document.getElementById("research1Name").innerHTML = "More efficiencent factories. Increase factory production by another 150%. $4000";
+      button1.style.display = "block";
+      button1.style.visibility = "visible";
+    }
+    else if(factory1Research == 4 && factory1Total >= 50)
+    {
+      button1 = document.getElementById("research1Button");
+      document.getElementById("research1Name").innerHTML = "More efficiencent factories. Increase factory production by another 500%. $10000";
       button1.style.display = "block";
       button1.style.visibility = "visible";
     }
@@ -179,6 +193,18 @@ function research()
       document.getElementById("research3Button").style.display = "block";
       document.getElementById("research3Button").style.visibility = "visible";
     }
+    else if(resourceEfficiency == 2)
+    {
+      document.getElementById("research3Name").innerHTML = "Resource efficiency boost. Get another 200% more paper and glue with every purchase. $2000";
+      document.getElementById("research3Button").style.display = "block";
+      document.getElementById("research3Button").style.visibility = "visible";
+    }
+    else if(resourceEfficiency == 3)
+    {
+      document.getElementById("research3Name").innerHTML = "Resource efficiency boost. Get another 200% more paper and glue with every purchase. $4000";
+      document.getElementById("research3Button").style.display = "block";
+      document.getElementById("research3Button").style.visibility = "visible";
+    }
     else
     {
       document.getElementById("research3Name").innerHTML = "";
@@ -197,6 +223,18 @@ function research()
     else if (factory2Research == 1)
     {
       document.getElementById("research4Name").innerHTML = "Increase heavy factory efficiency by 100%. $5000";
+      document.getElementById("research4Button").style.display = "block";
+      document.getElementById("research4Button").style.visibility = "visible";
+    }
+    else if (factory2Research == 2)
+    {
+      document.getElementById("research4Name").innerHTML = "Increase heavy factory efficiency by another 200%. $10000";
+      document.getElementById("research4Button").style.display = "block";
+      document.getElementById("research4Button").style.visibility = "visible";
+    }
+    else if (factory2Research == 3)
+    {
+      document.getElementById("research4Name").innerHTML = "Increase heavy factory efficiency by another 250%. $20000";
       document.getElementById("research4Button").style.display = "block";
       document.getElementById("research4Button").style.visibility = "visible";
     }
@@ -339,6 +377,32 @@ function research1Button() // small factory  --> research this
       document.getElementById("errorMessage").innerHTML = "Not enough money!";
     }
   }
+  else if(factory1Research == 3)
+  {
+    if(money >= 4000)
+    {
+      money -= 4000;
+      factory1Research ++;
+      factory1E*=2.5;
+    }
+    else
+    {
+      document.getElementById("errorMessage").innerHTML = "Not enough money!";
+    }
+  }
+  else if(factory1Research == 4)
+  {
+    if(money >= 10000)
+    {
+      money -= 10000;
+      factory1Research ++;
+      factory1E*=5;
+    }
+    else
+    {
+      document.getElementById("errorMessage").innerHTML = "Not enough money!";
+    }
+  }
   else
   {
     button1.style.display = "none";
@@ -376,6 +440,34 @@ function research3Button()
       resourceEfficiency ++;
       glueE *=2.00;
       paperE *=2.00;
+    }
+    else
+    {
+      document.getElementById("errorMessage").innerHTML = "Not enough money!";
+    }
+  }
+  else if (resourceEfficiency == 2)
+  {
+    if(money >= 2000)
+    {
+      money -= 2000;
+      resourceEfficiency ++;
+      glueE *=3.00;
+      paperE *=3.00;
+    }
+    else
+    {
+      document.getElementById("errorMessage").innerHTML = "Not enough money!";
+    }
+  }
+  else if (resourceEfficiency == 3)
+  {
+    if(money >= 4000)
+    {
+      money -= 4000;
+      resourceEfficiency ++;
+      glueE *=3.00;
+      paperE *=3.00;
     }
     else
     {
@@ -426,6 +518,18 @@ function research4Button()
     factory2Research ++;
     factory2E += 1.00;
   }
+  else if(money >= 10000 && factory2Research == 2) // add 200% efficiency
+  {
+    money -= 10000
+    factory2Research ++;
+    factory2E += 3.00;
+  }
+  else if(money >= 20000 && factory2Research == 2) // add 250% efficiency
+  {
+    money -= 20000
+    factory2Research ++;
+    factory2E += 3.50;
+  }
   else
   {
     // should be invisible
@@ -438,12 +542,21 @@ function research4Button()
 // people bought a sticky note
 function buySticky()
 {
+  //demandPercent = ((demandPrice) / (myPrice))**2
+  var tempDP = demandPercent;
+  var divisor = 1;
+  while(tempDP >= 1)
+  {
+    divisor *=2;
+    tempDP /=2;
+  }
+  for(i = 0; i < (divisor))
   if(stickyToSell > 0)
   {
     stickyToSell --;
     money += myPrice;
   }
-  setTimeout(buySticky, (1/demandPercent)*1000);
+  setTimeout(buySticky, (1/tempDP)*1000);
 }
 
 // player purchased a small factory
