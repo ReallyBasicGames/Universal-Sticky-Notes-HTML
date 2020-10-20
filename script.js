@@ -41,22 +41,39 @@ var factory1Price = 100;
 var factory1E = 1; //%
 ///////////////////////////////////
 
+// large factory
+var researchedLargeFactory = false;
+
+var factory2Total = 0;
+var factory2Price = 500;
+var factory2E = 10; //%
+///////////////////////////////////
+
 
 // research
 
-var factoryResearch = 0;
+var factory1Research = 0; // level of this research
 var button1;
 var button1Text;
 
 var autoBuying = false;
-var autoBuyPurchased = false;
+var autoBuyPurchased = false; // level of this research
 
-var resourceEfficiency = 0;
+var resourceEfficiency = 0; // level of this research
+
+var factory2Research = 0; // level of this research
+
 
 ///////////////////////////////////
 
+// set the buttons invisible initially
+document.getElementById("research4Button").style.visibility = "hidden";
+document.getElementById("research3Button").style.visibility = "hidden";
+document.getElementById("research2Button").style.visibility = "hidden";
+document.getElementById("research1Button").style.visibility = "hidden";
 
-
+// set heavy factories invisible
+document.getElementById("Factory2").style.visibility = "hidden";
 
 function buyGlue() {
   if(money >= gluePrice)
@@ -109,42 +126,97 @@ function research()
 {
   if(stickysMade >= 1000)
   {
-    if(factoryResearch == 0)
+    if(factory1Research == 0)
     {
       button1 = document.getElementById("research1Button");
       document.getElementById("research1Name").innerHTML = "Factories. Start automatic production. $100";
       button1.style.display = "block";
+      button1.style.visibility = "visible";
     }
-    else if(factoryResearch == 1 && factory1Total > 1)
+    else if(factory1Research == 1 && factory1Total > 1)
     {
       button1 = document.getElementById("research1Button");
       document.getElementById("research1Name").innerHTML = "Begin the long road of efficiency. Increase factory production by 20%. $500";
       button1.style.display = "block";
+      button1.style.visibility = "visible";
     }
-    else if(factoryResearch == 2 && factory1Total > 10)
+    else if(factory1Research == 2 && factory1Total > 10)
     {
       button1 = document.getElementById("research1Button");
       document.getElementById("research1Name").innerHTML = "More efficiencent factories. Increase factory production by another 50%. $2000";
       button1.style.display = "block";
+      button1.style.visibility = "visible";
     }
     else
     {
       button1 = document.getElementById("research1Button");
       button1.style.display = "none";
+      button1.style.visibility = "hidden";
     }
   }
   if(!autoBuyPurchased && stickysMade >= 2000)
   {
     document.getElementById("research2Name").innerHTML = "Auto buyer. Automatically purchases resources when you run out. $1000";
     document.getElementById("research2Button").style.display = "block";
+    document.getElementById("research2Button").style.visibility = "visible";
   }
   else
   {
     document.getElementById("research2Button").style.display = "none";
+    document.getElementById("research2Button").style.visibility = "hidden";
   }
-  document.getElementById("research3Name").innerHTML = "";
-  document.getElementById("research3Button").style.display = "none";
+  if(stickysMade >= 2000)
+  {
+    if(resourceEfficiency == 0)
+    {
+      document.getElementById("research3Name").innerHTML = "Resource efficiency boost. Get 50% more paper and glue with every purchase. $500";
+      document.getElementById("research3Button").style.display = "block";
+      document.getElementById("research3Button").style.visibility = "visible";
+    }
+    else if(resourceEfficiency == 1)
+    {
+      document.getElementById("research3Name").innerHTML = "Resource efficiency boost. Get 100% more paper and glue with every purchase. $1000";
+      document.getElementById("research3Button").style.display = "block";
+      document.getElementById("research3Button").style.visibility = "visible";
+    }
+    else
+    {
+      document.getElementById("research3Name").innerHTML = "";
+      document.getElementById("research3Button").style.display = "none";
+      document.getElementById("research2Button").style.visibility = "hidden";
+    }
+  }
+  if(factory1Total >= 20 && stickysMade >= 10000)
+  {
+    if(factory2Research == 0)
+    {
+      document.getElementById("research4Name").innerHTML = "Heavier factories. Produce 10 stickys a second. $2000";
+      document.getElementById("research4Button").style.display = "block";
+      document.getElementById("research4Button").style.visibility = "visible";
+    }
+    else if (factory2Research == 1)
+    {
+      document.getElementById("research4Name").innerHTML = "Increase heavy factory efficiency by 100%. $5000";
+      document.getElementById("research4Button").style.display = "block";
+      document.getElementById("research4Button").style.visibility = "visible";
+    }
+    else
+    {
+      document.getElementById("research4Name").innerHTML = "";
+      document.getElementById("research4Button").style.display = "none";
+      document.getElementById("research4Button").style.visibility = "hidden";
+    }
+  }
 }
+/*
+<p id="Factory2" style.visibility="hidden">
+Level 2 Factories: <a id="2factoryTotal"></a><br>
+Price: $ <a id="2factoryPrice"></a><br>
+<button onclick="buyFactory2()">Buy Lvl 2 Factory</button>
+</p>
+*/
+/////// end of research function ////////////////////////////
+
 
 function buyMarketing()
 {
@@ -161,7 +233,7 @@ function buyMarketing()
   }
 }
 
-update();
+update(); // update function, refresh the values on the html page
 setTimeout(buySticky, (1/demandPercent)*1000);
 function update(){
   
@@ -180,6 +252,8 @@ function update(){
   document.getElementById("paperPrice").innerHTML = paperPrice.toFixed(2);
   document.getElementById("1factoryPrice").innerHTML = factory1Price.toFixed(2);
   document.getElementById("1factoryTotal").innerHTML = factory1Total;
+  document.getElementById("2factoryPrice").innerHTML = factory2Price.toFixed(2);
+  document.getElementById("2factoryTotal").innerHTML = factory2Total;
 
   // set the autobuy check box properties
   // set the autobuy checkbox visible if purchased
@@ -195,11 +269,11 @@ function update(){
   // if checked, purchase glue and paper when out
   if(autoBuyCheckBox.checked) 
   {
-    if(myGlue <= factory1Total*factory1E*2)
+    if(myGlue <= (factory1Total*factory1E+ factory2Total*factory2E)*3)
     {
       buyGlue();
     }
-    if(myPaper <= factory1Total*factory1E*2)
+    if(myPaper <= (factory1Total*factory1E+ factory2Total*factory2E)*3)
     {
       buyPaper();
     }
@@ -224,27 +298,27 @@ function update(){
 
 }
 
-function research1Button()
+function research1Button() // small factory  --> research this
 {
-  if(!researchedSmallFactory && factoryResearch == 0)
+  if(!researchedSmallFactory && factory1Research == 0)
   {
     if(money >= 100)
     {
       money -= 100;
       researchedSmallFactory = true;
-      factoryResearch ++;
+      factory1Research ++;
     }
     else
     {
       document.getElementById("errorMessage").innerHTML = "Not enough money!";
     }
   }
-  else if(factoryResearch == 1)
+  else if(factory1Research == 1)
   {
     if(money >= 500)
     {
       money -= 500;
-      factoryResearch ++;
+      factory1Research ++;
       factory1E*=1.2;
     }
     else
@@ -252,12 +326,12 @@ function research1Button()
       document.getElementById("errorMessage").innerHTML = "Not enough money!";
     }
   }
-  else if(factoryResearch == 2)
+  else if(factory1Research == 2)
   {
     if(money >= 2000)
     {
       money -= 2000;
-      factoryResearch ++;
+      factory1Research ++;
       factory1E*=1.5;
     }
     else
@@ -267,14 +341,54 @@ function research1Button()
   }
   else
   {
-
+    button1.style.display = "none";
+    // should be invisible here.
   }
 }
 
+///////////// End of small factory research //////////////////
+
+
+// large factory research 
+
+// resource efficiency research /////////////
 function research3Button()
 {
-
+  if(resourceEfficiency == 0)
+  {
+    if(money >= 500)
+    {
+      money -= 500;
+      resourceEfficiency ++;
+      glueE *=1.50;
+      paperE *=1.50;
+    }
+    else
+    {
+      document.getElementById("errorMessage").innerHTML = "Not enough money!";
+    }
+  }
+  else if (resourceEfficiency == 1)
+  {
+    if(money >= 1000)
+    {
+      money -= 1000;
+      resourceEfficiency ++;
+      glueE *=2.00;
+      paperE *=2.00;
+    }
+    else
+    {
+      document.getElementById("errorMessage").innerHTML = "Not enough money!";
+    }
+  }
+  else
+  {
+    document.getElementById("research2Button").style.display = "none";
+    // should be invisible
+  }
 }
+// end of large factory research
 
 // autobuy research
 document.getElementById("autobuyer").style.visibility = "hidden";
@@ -286,9 +400,42 @@ function research2Button()
     money -= 1000;
     document.getElementById("autobuyer").style.visibility = "visible";
   }
+  else
+  {
+    // not enough money
+  }
+  if(autoBuyPurchased)
+  {
+    document.getElementById("research2Button").style.display = "none";
+  }
 }
 
+// large factory research 
+function research4Button()
+{
+  if(money>=2000 && factory2Research == 0) // research large factory
+  {
+    money -= 2000;
+    factory2Research ++;
+    researchedLargeFactory = true;
+    document.getElementById("Factory2").style.visibility = "visible";
+  }
+  else if(money >= 5000 && factory2Research == 1) // add 100% efficiency
+  {
+    money -= 5000
+    factory2Research ++;
+    factory2E += 1.00;
+  }
+  else
+  {
+    // should be invisible
+    document.getElementById("research4Button").style.display = "none";
+  }
+}
+// end of large factory research ////////////////////////////
 
+
+// people bought a sticky note
 function buySticky()
 {
   if(stickyToSell > 0)
@@ -299,6 +446,7 @@ function buySticky()
   setTimeout(buySticky, (1/demandPercent)*1000);
 }
 
+// player purchased a small factory
 function buyFactory1()
 {
   if(money >= factory1Price)
@@ -306,10 +454,21 @@ function buyFactory1()
     money -= factory1Price;
     factory1Price *=1.05;
     factory1Total ++;
-    if(factory1Total == 1)
-    {
-      makeStickyFactories();
-    }
+  }
+  else
+  {
+    document.getElementById("errorMessage").innerHTML = "Not enough money!";
+  }
+}
+
+// player purchased a large factory
+function buyFactory2()
+{
+  if(money >= factory2Price)
+  {
+    money -= factory2Price;
+    factory2Price *=1.05;
+    factory2Total ++;
   }
   else
   {
@@ -318,10 +477,11 @@ function buyFactory1()
 }
 
 
+// factories producing 
 makeStickyFactories(); // run the function at the start
 function makeStickyFactories()
 {
-  for(i = 0; i < factory1Total*factory1E; i++)
+  for(i = 0; i < (factory1Total*factory1E + factory2Total*factory2E); i++)
   {
     if(myPaper > 0 && myGlue > 0)
     {
