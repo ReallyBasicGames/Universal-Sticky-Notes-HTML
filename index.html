@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>repl.it</title>
+    
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <h2> Sticky Notes: <a id="stickysMade"></a></h2>
+  <a id="errorMessage"></a>
+  <body>
+    <div class="row">
+      <div class="column">
+        <h4><center>Business</center></h4>
+      My Stickys: <a id="myStickys"></a>
+      <br>Cash: $<a id="myMoney"></a>
+      <br>
+      <button onclick="makeSticky()">Make Sticky Note</button>
+      <br>Price: $<a id="pricePerSticky"></a>
+      <button onclick="increasePrice()">Raise</button>
+      <button onclick="decreasePrice()">Lower</button>
+      <br>Demand: <a id="demandPercent"></a><br>
+      <br>Marketing Level: <a id="marketLvl"></a><br>Increase for: $<a id="marketPrice"></a><br>
+      <button onclick="buyMarketing()">Increase</button>
+
+
+      <p id="autobuyer" style="hidden">Autobuyer: <input id="AutobuyCheckbox" style.display="none" type="checkbox"></input></p>
+      
+      Glue: <a id="glueAmount"></a>
+      <br>Glue Price: $<a id="gluePrice"></a>
+      <br>
+      <button onclick="buyGlue()">Buy Glue</button>
+      <br>
+      <br>Paper: <a id="paperAmount"></a>
+      <br>Paper Price: $<a id="paperPrice"></a>
+      <br>
+      <button onclick="buyPaper()">Buy Paper</button>
+      </div>
+      <div class="column">
+        <h4><center>Research</center></h4>
+        
+        <button class=researchButton id="research1Button" onclick="research1Button()"><a id="research1Name"></a></button>
+        <button class=researchButton id="research2Button" onclick="research2Button()"><a id="research2Name"></a></button>
+        <button class=researchButton id="research3Button" onclick="research3Button()"><a id="research3Name"></a></button>
+
+      </div>
+      <div style="none" id="factories" class="column">
+        <h4><center>Factories</center></h4>
+        <br>
+        
+        Level 1 Factories: <a id="1factoryTotal"></a><br>
+        Price: $ <a id="1factoryPrice"></a><br>
+        <button onclick="buyFactory1()">Buy Lvl 1 Factory</button>
+
+      </div>
+    </div>
+  </body>
+  <script src="script.js">// run the script</script>
+</html>
