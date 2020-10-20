@@ -20,6 +20,7 @@ var myGlue = 100;
 // marketing
 var marketinglvl = 1;
 var marketingPrice = 100;
+var marketingE = 1;
 
 // glue
 var gluePrice = 1;
@@ -63,6 +64,8 @@ var resourceEfficiency = 0; // level of this research
 
 var factory2Research = 0; // level of this research
 
+var marketingResearch = 0; // level of this research
+
 
 ///////////////////////////////////
 
@@ -71,6 +74,7 @@ document.getElementById("research4Button").style.visibility = "hidden";
 document.getElementById("research3Button").style.visibility = "hidden";
 document.getElementById("research2Button").style.visibility = "hidden";
 document.getElementById("research1Button").style.visibility = "hidden";
+document.getElementById("research5Button").style.visibility = "hidden";
 
 // set heavy factories invisible
 document.getElementById("Factory2").style.visibility = "hidden";
@@ -245,6 +249,30 @@ function research()
       document.getElementById("research4Button").style.visibility = "hidden";
     }
   }
+  if(stickysMade >= 3000)
+  {
+    
+    if(marketingResearch == 0)
+    {
+      document.getElementById("research5Name").innerHTML = "Billboards. Increases marketing efficiency by 50%. $5000";
+      document.getElementById("research5Button").style.visibility = "visible";
+    }
+    else if(marketingResearch == 1)
+    {
+      document.getElementById("research5Name").innerHTML = "Internet Ads. Increases marketing efficiency by 100%. $12500";
+      document.getElementById("research5Button").style.visibility = "visible";
+    }
+    else if(marketingResearch == 2)
+    {
+      document.getElementById("research5Name").innerHTML = ". Increases marketing efficiency by 200%. $25000";
+      document.getElementById("research5Button").style.visibility = "visible";
+    }
+    else
+    {
+      document.getElementById("research5Name").innerHTML = "";
+      document.getElementById("research5Button").style.visibility = "hidden";
+    }
+  }
 }
 /*
 <p id="Factory2" style.visibility="hidden">
@@ -280,7 +308,7 @@ function update(){
   document.getElementById("marketPrice").innerHTML = marketingPrice;
   document.getElementById("pricePerSticky").innerHTML = myPrice.toFixed(2);
   // set the demand
-  demandPercent = ((demandPrice) / (myPrice))**2;
+  demandPercent = ((demandPrice) / (myPrice))**2 * marketingE;
   document.getElementById("demandPercent").innerHTML = demandPercent.toFixed(2);
   document.getElementById("myStickys").innerHTML = stickyToSell;
   document.getElementById("stickysMade").innerHTML = stickysMade;
@@ -501,6 +529,71 @@ function research2Button()
     document.getElementById("research2Button").style.display = "none";
   }
 }
+// marketing research
+/*
+    if(marketingResearch == 0)
+    {
+      document.getElementById("research5Name").innerHTML = "Billboards. Increases marketing efficiency by 50%. $5000";
+      document.getElementById("research5Button").style.visibility = "visible";
+    }
+    else if(marketingResearch == 1)
+    {
+      document.getElementById("research5Name").innerHTML = "Internet Ads. Increases marketing efficiency by 100%. $12500";
+      document.getElementById("research5Button").style.visibility = "visible";
+    }
+    else if(marketingResearch == 2)
+    {
+      document.getElementById("research5Name").innerHTML = ". Increases marketing efficiency by 200%. $25000";
+      document.getElementById("research5Button").style.visibility = "visible";
+    }
+*/
+function research5Button()
+{
+  if(marketingResearch == 0)
+  {
+    if(money >= 5000)
+    {
+      money -= 5000;
+      marketingResearch ++;
+      marketingE *= 1.5;
+    }
+    else
+    {
+      document.getElementById("errorMessage").innerHTML = "Not enough money!";
+    }
+  }
+  else if(marketingResearch == 1)
+  {
+    if(money >= 12500)
+    {
+      money -= 12500;
+      marketingResearch ++;
+      marketingE *= 2.0;
+    }
+    else
+    {
+      document.getElementById("errorMessage").innerHTML = "Not enough money!";
+    }
+  }
+  else if(marketingResearch == 2)
+  {
+    if(money >= 25000)
+    {
+      money -= 25000;
+      marketingResearch ++;
+      marketingE *= 3.0;
+    }
+    else
+    {
+      document.getElementById("errorMessage").innerHTML = "Not enough money!";
+    }
+  }
+  else
+  {
+    document.getElementById("research5Button").style.visibility = "hidden";
+  }
+}
+//////////////////// end marketing research ////////////////////////
 
 // large factory research 
 function research4Button()
