@@ -1,7 +1,7 @@
 var stickysMade = 0;
 
 // money + supply vs demand
-var money = 10000;
+var money = 100;
 var stickyToSell = 0;
 
 var myPrice = 1;
@@ -550,11 +550,13 @@ function buySticky()
     divisor *=2;
     tempDP /=2;
   }
-  for(i = 0; i < (divisor))
-  if(stickyToSell > 0)
+  for(i = 0; i < (divisor); i++)
   {
-    stickyToSell --;
-    money += myPrice;
+    if(stickyToSell > 0)
+    {
+      stickyToSell --;
+      money += myPrice;
+    }
   }
   setTimeout(buySticky, (1/tempDP)*1000);
 }
